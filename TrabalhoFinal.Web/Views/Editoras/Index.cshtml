@@ -1,0 +1,142 @@
+@model IEnumerable<TrabalhoFinal.Application.ViewModels.EditoraViewModel>
+
+@{
+    ViewData["Title"] = "Editoras";
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1>Editoras</h1>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-action="Create" class="btn btn-primary">
+            Nova Editora
+        </a>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar editoras..." />
+            <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                🔍 Buscar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="editorasContainer">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Nenhuma editora cadastrada. <a asp-action="Create">Cadastre a primeira editora</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>País</th>
+                        <th>Ano Fundação</th>
+                        <th>Site</th>
+                        <th>Mangás</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.Nome</strong></td>
+                            <td>@item.Pais</td>
+                            <td>@item.AnoFundacao</td>
+                            <td><a href="@item.Site" target="_blank">@item.Site</a></td>
+                            <td><span class="badge bg-info">@item.QuantidadeMangas</span></td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="Detalhes">
+                                        Detalhes
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Editar">
+                                        Editar
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Excluir">
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Busca com AJAX
+            $('#searchInput').on('keyup', function() {
+                performSearch();
+            });
+
+            $('#searchButton').on('click', function() {
+                performSearch();
+            });
+
+            function performSearch() {
+                var termo = $('#searchInput').val();
+                
+                $.ajax({
+                    url: '@Url.Action("Buscar", "Editoras")',
+                    type: 'GET',
+                    data: { termo: termo },
+                    success: function(data) {
+                        updateTable(data);
+                    },
+                    error: function() {
+                        alert('Erro ao buscar editoras');
+                    }
+                });
+            }
+
+            function updateTable(editoras) {
+                var html = '';
+                
+                if (editoras.length === 0) {
+                    html = '<div class="alert alert-warning">Nenhuma editora encontrada.</div>';
+                } else {
+                    html = '<div class="table-responsive"><table class="table table-striped table-hover">';
+                    html += '<thead class="table-dark"><tr>';
+                    html += '<th>Nome</th><th>País</th><th>Ano Fundação</th><th>Site</th><th>Mangás</th><th class="text-center">Ações</th>';
+                    html += '</tr></thead><tbody>';
+                    
+                    editoras.forEach(function(editora) {
+                        html += '<tr>';
+                        html += '<td><strong>' + editora.nome + '</strong></td>';
+                        html += '<td>' + editora.pais + '</td>';
+                        html += '<td>' + editora.anoFundacao + '</td>';
+                        html += '<td><a href="' + editora.site + '" target="_blank">' + editora.site + '</a></td>';
+                        html += '<td><span class="badge bg-info">' + editora.quantidadeMangas + '</span></td>';
+                        html += '<td class="text-center">';
+                        html += '<div class="btn-group" role="group">';
+                        html += '<a href="/Editoras/Details/' + editora.id + '" class="btn btn-sm btn-info" title="Detalhes">👁️</a>';
+                        html += '<a href="/Editoras/Edit/' + editora.id + '" class="btn btn-sm btn-warning" title="Editar">Editar</a>';
+                        html += '<a href="/Editoras/Delete/' + editora.id + '" class="btn btn-sm btn-danger" title="Excluir">Excluir</a>';
+                        html += '</div></td>';
+                        html += '</tr>';
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                $('#editorasContainer').html(html);
+            }
+        });
+    </script>
+}

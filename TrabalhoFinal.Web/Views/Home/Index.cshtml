@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-4">Sistema de Gerenciamento de Mangás</h1>
+    <p class="lead">Clean Architecture + Domain-Driven Design (DDD)</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h2 class="card-title">Editoras</h2>
+                <p class="card-text">Gerencie as editoras que publicam seus mangás favoritos.</p>
+                <a asp-controller="Editoras" asp-action="Index" class="btn btn-primary">
+                    Ver Editoras
+                </a>
+                <a asp-controller="Editoras" asp-action="Create" class="btn btn-outline-primary">
+                    Nova Editora
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <h2 class="card-title">Mangás</h2>
+                <p class="card-text">Cadastre e organize sua coleção de mangás.</p>
+                <a asp-controller="Mangas" asp-action="Index" class="btn btn-primary">
+                    Ver Mangás
+                </a>
+                <a asp-controller="Mangas" asp-action="Create" class="btn btn-outline-primary">
+                    Novo Mangá
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5>✨ Recursos Implementados</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li>✅ Clean Architecture (4 camadas)</li>
+                            <li>✅ Domain-Driven Design (DDD)</li>
+                            <li>✅ Relacionamento 1:N (Editora → Mangás)</li>
+                            <li>✅ Entity Framework Core + SQL Server</li>
+                            <li>✅ Mapeamento com Mapster</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>✅ CRUD Completo</li>
+                            <li>✅ Validações Personalizadas</li>
+                            <li>✅ Busca Dinâmica com AJAX</li>
+                            <li>✅ Injeção de Dependências (DI/IoC)</li>
+                            <li>✅ Migrations Automáticas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

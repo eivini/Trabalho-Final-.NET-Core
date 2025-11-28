@@ -1,0 +1,45 @@
+@model TrabalhoFinal.Application.ViewModels.EditoraViewModel
+
+@{
+    ViewData["Title"] = "Excluir Editora";
+}
+
+<h1 class="text-danger">Excluir Editora</h1>
+<hr />
+
+<div class="alert alert-warning">
+    <h4>⚠️ Atenção!</h4>
+    <p>Você tem certeza que deseja excluir esta editora?</p>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9"><strong>@Model.Nome</strong></dd>
+            
+            <dt class="col-sm-3">País</dt>
+            <dd class="col-sm-9">@Model.Pais</dd>
+            
+            <dt class="col-sm-3">Ano de Fundação</dt>
+            <dd class="col-sm-9">@Model.AnoFundacao</dd>
+            
+            <dt class="col-sm-3">Mangás Cadastrados</dt>
+            <dd class="col-sm-9"><span class="badge bg-warning">@Model.QuantidadeMangas</span></dd>
+        </dl>
+        
+        @if (Model.QuantidadeMangas > 0)
+        {
+            <div class="alert alert-danger">
+                ⚠️ Esta editora possui <strong>@Model.QuantidadeMangas mangá(s)</strong> cadastrado(s). 
+                Não será possível excluí-la sem antes remover os mangás associados.
+            </div>
+        }
+        
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>

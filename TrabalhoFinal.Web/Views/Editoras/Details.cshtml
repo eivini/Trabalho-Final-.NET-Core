@@ -1,0 +1,37 @@
+@model TrabalhoFinal.Application.ViewModels.EditoraViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da Editora";
+}
+
+<h1>Detalhes da Editora</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">Nome</dt>
+            <dd class="col-sm-9"><strong>@Model.Nome</strong></dd>
+            
+            <dt class="col-sm-3">País</dt>
+            <dd class="col-sm-9">@Model.Pais</dd>
+            
+            <dt class="col-sm-3">Ano de Fundação</dt>
+            <dd class="col-sm-9">@Model.AnoFundacao</dd>
+            
+            <dt class="col-sm-3">Site</dt>
+            <dd class="col-sm-9"><a href="@Model.Site" target="_blank">@Model.Site</a></dd>
+            
+            <dt class="col-sm-3">Mangás Cadastrados</dt>
+            <dd class="col-sm-9"><span class="badge bg-info">@Model.QuantidadeMangas</span></dd>
+            
+            <dt class="col-sm-3">Data de Cadastro</dt>
+            <dd class="col-sm-9">@Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+        
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+@model TrabalhoFinal.Application.ViewModels.MangaViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Mangá";
+}
+
+<h1>Detalhes do Mangá</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <dl class="row">
+            <dt class="col-sm-3">Título</dt>
+            <dd class="col-sm-9"><strong>@Model.Titulo</strong></dd>
+            
+            <dt class="col-sm-3">Autor</dt>
+            <dd class="col-sm-9">@Model.Autor</dd>
+            
+            <dt class="col-sm-3">Gênero</dt>
+            <dd class="col-sm-9"><span class="badge bg-secondary">@Model.Genero</span></dd>
+            
+            <dt class="col-sm-3">Volumes</dt>
+            <dd class="col-sm-9">@Model.Volumes</dd>
+            
+            <dt class="col-sm-3">Ano de Publicação</dt>
+            <dd class="col-sm-9">@Model.AnoPublicacao</dd>
+            
+            <dt class="col-sm-3">Editora</dt>
+            <dd class="col-sm-9">@Model.EditoraNome</dd>
+            
+            <dt class="col-sm-3">Preço</dt>
+            <dd class="col-sm-9"><strong>R$ @Model.Preco.ToString("N2")</strong></dd>
+            
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                @if (Model.EmAndamento)
+                {
+                    <span class="badge bg-success">Em Andamento</span>
+                }
+                else
+                {
+                    <span class="badge bg-info">Finalizado</span>
+                }
+            </dd>
+            
+            <dt class="col-sm-3">Data de Cadastro</dt>
+            <dd class="col-sm-9">@Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+        
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>

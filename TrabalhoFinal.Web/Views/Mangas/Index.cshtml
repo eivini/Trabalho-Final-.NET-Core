@@ -1,0 +1,163 @@
+@model IEnumerable<TrabalhoFinal.Application.ViewModels.MangaViewModel>
+
+@{
+    ViewData["Title"] = "Mangás";
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1>Mangás</h1>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-action="Create" class="btn btn-primary">
+            Novo Mangá
+        </a>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="Buscar mangás por título, autor ou gênero..." />
+            <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                🔍 Buscar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="mangasContainer">
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Nenhum mangá cadastrado. <a asp-action="Create">Cadastre o primeiro mangá</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Gênero</th>
+                        <th>Volumes</th>
+                        <th>Editora</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>@item.Titulo</strong></td>
+                            <td>@item.Autor</td>
+                            <td><span class="badge bg-secondary">@item.Genero</span></td>
+                            <td>@item.Volumes</td>
+                            <td>@item.EditoraNome</td>
+                            <td>R$ @item.Preco.ToString("N2")</td>
+                            <td>
+                                @if (item.EmAndamento)
+                                {
+                                    <span class="badge bg-success">Em Andamento</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info">Finalizado</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info" title="Detalhes">
+                                        Detalhes
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning" title="Editar">
+                                        Editar
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Excluir">
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Busca com AJAX
+            $('#searchInput').on('keyup', function() {
+                performSearch();
+            });
+
+            $('#searchButton').on('click', function() {
+                performSearch();
+            });
+
+            function performSearch() {
+                var termo = $('#searchInput').val();
+                
+                $.ajax({
+                    url: '@Url.Action("Buscar", "Mangas")',
+                    type: 'GET',
+                    data: { termo: termo },
+                    success: function(data) {
+                        updateTable(data);
+                    },
+                    error: function() {
+                        alert('Erro ao buscar mangás');
+                    }
+                });
+            }
+
+            function updateTable(mangas) {
+                var html = '';
+                
+                if (mangas.length === 0) {
+                    html = '<div class="alert alert-warning">Nenhum mangá encontrado.</div>';
+                } else {
+                    html = '<div class="table-responsive"><table class="table table-striped table-hover">';
+                    html += '<thead class="table-dark"><tr>';
+                    html += '<th>Título</th><th>Autor</th><th>Gênero</th><th>Volumes</th><th>Editora</th><th>Preço</th><th>Status</th><th class="text-center">Ações</th>';
+                    html += '</tr></thead><tbody>';
+                    
+                    mangas.forEach(function(manga) {
+                        html += '<tr>';
+                        html += '<td><strong>' + manga.titulo + '</strong></td>';
+                        html += '<td>' + manga.autor + '</td>';
+                        html += '<td><span class="badge bg-secondary">' + manga.genero + '</span></td>';
+                        html += '<td>' + manga.volumes + '</td>';
+                        html += '<td>' + manga.editoraNome + '</td>';
+                        html += '<td>R$ ' + manga.preco.toFixed(2).replace('.', ',') + '</td>';
+                        html += '<td>';
+                        if (manga.emAndamento) {
+                            html += '<span class="badge bg-success">Em Andamento</span>';
+                        } else {
+                            html += '<span class="badge bg-info">Finalizado</span>';
+                        }
+                        html += '</td>';
+                        html += '<td class="text-center">';
+                        html += '<div class="btn-group" role="group">';
+                        html += '<a href="/Mangas/Details/' + manga.id + '" class="btn btn-sm btn-info" title="Detalhes">👁️</a>';
+                        html += '<a href="/Mangas/Edit/' + manga.id + '" class="btn btn-sm btn-warning" title="Editar">Editar</a>';
+                        html += '<a href="/Mangas/Delete/' + manga.id + '" class="btn btn-sm btn-danger" title="Excluir">Excluir</a>';
+                        html += '</div></td>';
+                        html += '</tr>';
+                    });
+                    
+                    html += '</tbody></table></div>';
+                }
+                
+                $('#mangasContainer').html(html);
+            }
+        });
+    </script>
+}
