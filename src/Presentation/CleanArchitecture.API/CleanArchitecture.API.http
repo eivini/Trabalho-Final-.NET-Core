@@ -1,0 +1,30 @@
+@CleanArchitecture.API_HostAddress = http://localhost:5220
+
+### Get all categories
+GET {{CleanArchitecture.API_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
+### Create a category
+POST {{CleanArchitecture.API_HostAddress}}/api/categories
+Content-Type: application/json
+
+{
+  "name": "Electronics",
+  "description": "Electronic products"
+}
+
+###
+
+### Get all products
+GET {{CleanArchitecture.API_HostAddress}}/api/products
+Accept: application/json
+
+###
+
+### Get all customers
+GET {{CleanArchitecture.API_HostAddress}}/api/customers
+Accept: application/json
+
+###
