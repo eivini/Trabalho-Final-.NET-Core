@@ -97,7 +97,7 @@ dotnet run --project src/Presentation/CleanArchitecture.API
 ### Acessar a documentação da API
 
 Após iniciar a aplicação, acesse:
-- Swagger UI: `https://localhost:5001/swagger`
+- Swagger UI: `https://localhost:7279/swagger` (HTTPS) ou `http://localhost:5220/swagger` (HTTP)
 
 ## Endpoints da API
 
